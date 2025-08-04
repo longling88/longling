@@ -136,7 +136,7 @@ function displayLoginForm(): void // PHP 7.0+ 支持的返回类型声明
     </head>
     <body>
         <form method="post">
-            <h2>后台登录 (Admin Login)</h2>
+            <h2>后台登录 (Login)</h2>
             <label for="username">用户名 (Username):</label>
             <input type="text" id="username" name="username" required autocomplete="username">
             <label for="password">密码 (Password):</label>
@@ -512,6 +512,23 @@ unset($_SESSION['admin_message'], $_SESSION['message_type']);
         .batch-delete-btn:hover {
             background-color: #c82333;
         }
+        /* 导出按钮样式 */
+        .export-btn {
+            background-color: #28a745; /* 绿色 */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            margin-top: 15px;
+            margin-right: 10px; /* 与批量删除按钮间隔 */
+        }
+        .export-btn:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
@@ -568,6 +585,7 @@ old2.com https://new2.com' required></textarea><br>
             </tbody>
         </table>
         <?php if (!empty($data)): ?>
+            <a href="export.php" class="export-btn"><i class="fas fa-file-export"></i> 导出为TXT (Export to TXT)</a>
             <input type="submit" name="batch_delete" value="批量删除选中规则 (Batch Delete Selected Rules)" class="batch-delete-btn">
         <?php endif; ?>
     </form>
