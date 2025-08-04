@@ -6,7 +6,7 @@
 
 <img width="331" height="376" alt="image" src="https://github.com/user-attachments/assets/855ef763-15fb-4f39-852f-18d4b5447042" />
 
-后台页面
+后台页面  删除和导出TXT放在底部
 
 <img width="702" height="935" alt="image" src="https://github.com/user-attachments/assets/9aee44b1-d9f1-448a-aa1c-3c5afc61d78a" />
 
