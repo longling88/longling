@@ -84,15 +84,18 @@ echo "<tr>
 if (empty($data)) {
     echo "<tr><td colspan='3' style='text-align:center; padding: 10px;'>未找到域名跳转规则 (No domain redirect rules found)</td></tr>";
 } else {
-    foreach ($data as $host => $target) {
-        // 始终检查 HTTP，因为重定向可能从 HTTP 到 HTTPS 发生
-        $url = "http://" . $host; 
-        $status = checkRedirectStatus($url);
-        echo "<tr>
-                <td style='padding: 10px;'>{$host}</td>
-                <td style='padding: 10px;'><a href='{$target}' target='_blank'>{$target}</a></td>
-                <td style='padding: 10px;'>{$status}</td>
-              </tr>";
+    foreach ($data as $host => $rule) {
+        if (is_array($rule) && isset($rule['target'])) {
+            $target = $rule['target'];
+            // 始终检查 HTTP，因为重定向可能从 HTTP 到 HTTPS 发生
+            $url = "http://" . $host; 
+            $status = checkRedirectStatus($url);
+            echo "<tr>
+                    <td style='padding: 10px;'>{$host}</td>
+                    <td style='padding: 10px;'><a href='{$target}' target='_blank'>{$target}</a></td>
+                    <td style='padding: 10px;'>{$status}</td>
+                  </tr>";
+        }
     }
 }
 
