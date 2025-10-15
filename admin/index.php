@@ -221,8 +221,11 @@ if (isset($_POST['add'])) {
         $new = filter_var($new, FILTER_SANITIZE_URL);
 
         if (!empty($old) && !empty($new)) {
-            // 将旧域名转换为小写，确保一致性和正确的匹配
-            $data[strtolower($old)] = $new;
+            // 将旧域名转换为小写，并保存目标URL和当前时间
+            $data[strtolower($old)] = [
+                'target' => $new,
+                'time'   => date('Y-m-d H:i:s')
+            ];
             if (writeDomainRules($data)) {
                 $_SESSION['admin_message'] = "规则添加成功。";
                 $_SESSION['message_type'] = "success";
@@ -250,7 +253,11 @@ if (isset($_POST['batch_add'])) { // 将 'batch' 改为 'batch_add' 以区分批
             $old = filter_var(trim($parts[0]), FILTER_SANITIZE_URL);
             $new = filter_var(trim($parts[1]), FILTER_SANITIZE_URL);
             if (!empty($old) && !empty($new)) {
-                $data[strtolower($old)] = $new;
+                // 保存目标URL和当前时间
+                $data[strtolower($old)] = [
+                    'target' => $new,
+                    'time'   => date('Y-m-d H:i:s')
+                ];
                 $updated = true;
             }
         }
@@ -349,7 +356,7 @@ unset($_SESSION['admin_message'], $_SESSION['message_type']);
             line-height: 1.6;
         }
         .container {
-            max-width: 960px;
+            max-width: 1200px;
             margin: 30px auto;
             padding: 25px;
             background-color: #fff;
@@ -529,6 +536,24 @@ unset($_SESSION['admin_message'], $_SESSION['message_type']);
         .export-btn:hover {
             background-color: #218838;
         }
+        /* 时间列样式 */
+        .time-column {
+            font-size: 0.9em;
+            color: #666;
+            white-space: nowrap;
+        }
+        /* 移动端表格响应式 */
+        @media (max-width: 768px) {
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            .container {
+                padding: 15px;
+                margin: 15px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -565,19 +590,29 @@ old2.com https://new2.com' required></textarea><br>
         <table>
             <thead>
                 <tr>
-                    <th><input type="checkbox" id="select_all" onclick="toggleAllCheckboxes(this)"></th> <th>序号 (No.)</th> <th>原域名 (Original Domain)</th>
+                    <th><input type="checkbox" id="select_all" onclick="toggleAllCheckboxes(this)"></th> 
+                    <th>序号 (No.)</th> 
+                    <th>原域名 (Original Domain)</th>
                     <th>跳转地址 (Target URL)</th>
+                    <th>操作时间 (Operation Time)</th>
                     <th>操作 (Action)</th>
                 </tr>
             </thead>
             <tbody>
                 <?php if (empty($data)): ?>
-                    <tr><td colspan="5" style="text-align: center; padding: 20px;">暂无跳转规则 (No redirect rules found)</td></tr> <?php else: ?>
-                    <?php $row_number = 1; ?> <?php foreach ($data as $k => $v): ?>
+                    <tr><td colspan="6" style="text-align: center; padding: 20px;">暂无跳转规则 (No redirect rules found)</td></tr> 
+                <?php else: ?>
+                    <?php $row_number = 1; ?> 
+                    <?php foreach ($data as $k => $v): ?>
                         <tr>
                             <td><input type="checkbox" name="selected_domains[]" value="<?php echo htmlspecialchars($k); ?>"></td>
-                            <td><?php echo $row_number++; ?></td> <td><?php echo htmlspecialchars($k); ?></td>
-                            <td><a href="<?php echo htmlspecialchars($v); ?>" target="_blank"><?php echo htmlspecialchars($v); ?></a></td>
+                            <td><?php echo $row_number++; ?></td> 
+                            <td><?php echo htmlspecialchars($k); ?></td>
+                            <td><a href="<?php echo htmlspecialchars($v['target']); ?>" target="_blank"><?php echo htmlspecialchars($v['target']); ?></a></td>
+                            <td class="time-column">
+                                <i class="fas fa-clock"></i> 
+                                <?php echo htmlspecialchars($v['time'] ?? 'N/A'); ?>
+                            </td>
                             <td><a href='?delete=<?php echo urlencode($k); ?>' onclick="return confirm('确定要删除这条规则吗？ (Are you sure you want to delete this rule?)');"><i class="fas fa-trash-alt"></i> 删除 (Delete)</a></td>
                         </tr>
                     <?php endforeach; ?>
