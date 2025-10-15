@@ -55,9 +55,12 @@ header('Expires: 0');
 
 // 遍历域名规则，格式化并输出到文件
 if (!empty($domainRules)) {
-    foreach ($domainRules as $oldDomain => $newUrl) {
-        // 输出格式为：原域名 空格 跳转地址
-        echo htmlspecialchars($oldDomain) . " " . htmlspecialchars($newUrl) . "\n";
+    foreach ($domainRules as $oldDomain => $rule) {
+        if (is_array($rule) && isset($rule['target'])) {
+            $newUrl = $rule['target'];
+            // 输出格式为：原域名 空格 跳转地址
+            echo htmlspecialchars($oldDomain) . " " . htmlspecialchars($newUrl) . "\n";
+        }
     }
 } else {
     echo "No domain redirect rules found.";
