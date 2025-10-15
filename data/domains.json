@@ -1,4 +1,10 @@
 {
-    "old1.com": "https://new1.com",
-    "old2.com": "https://new2.com"
+    "old2.com": {
+        "target": "https://new2.com",
+        "time": "2025-10-15 19:45:43"
+    },
+    "301tiaozhuancdn.com": {
+        "target": "https://www.baidu.com",
+        "time": "2025-10-15 19:46:10"
+    }
 }
