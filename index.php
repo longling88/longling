@@ -47,9 +47,14 @@ $data = getDomainData();
 // 获取当前访问的域名
 $host = $_SERVER['HTTP_HOST'];
 
-// 查找当前域名对应的目标 URL
-// 使用 Null 合并运算符 (??) 确保 $target 在找不到时为 null，这是 PHP 7.0+ 的语法
-$target = $data[$host] ?? null; 
+// 查找当前域名对应的规则
+$rule = $data[$host] ?? null; 
+$target = null;
+
+// 检查规则是否存在，并从中提取目标URL
+if (is_array($rule) && isset($rule['target'])) {
+    $target = $rule['target'];
+}
 
 if ($target) {
     // 从 config.php 获取重定向延迟时间
