@@ -58,66 +58,237 @@ if ($target) {
 
     // 输出包含自动跳转的 HTML 页面
     echo "<!DOCTYPE html>
-    <html lang='en'>
+    <html lang='zh-CN'>
     <head>
         <meta charset='utf-8'>
-        <title>正在跳转... (Redirecting...)</title>
-        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>正在跳转...</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
         <meta http-equiv='refresh' content='{$delay};url={$target}'>
         <style>
-            body {
-                text-align: center;
-                padding-top: 100px;
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                color: #333;
-                background: #f9f9f9;
+            * {
                 margin: 0;
-            }
-            .container {
-                background: #ffffff;
-                border-radius: 8px;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-                display: inline-block;
-                padding: 40px 60px;
-                max-width: 600px;
+                padding: 0;
                 box-sizing: border-box;
             }
-            h2 {
-                color: #0056b3;
-                margin-bottom: 20px;
+            
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: #333;
+                line-height: 1.6;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
             }
-            a {
-                color: #007bff;
-                text-decoration: none;
+            
+            .container {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                padding: 40px 30px;
+                text-align: center;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+                max-width: 500px;
+                width: 100%;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            
+            .redirect-icon {
+                width: 80px;
+                height: 80px;
+                margin: 0 auto 20px;
+                background: linear-gradient(135deg, #4CAF50, #45a049);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                animation: pulse 2s infinite;
+            }
+            
+            .redirect-icon::before {
+                content: '→';
+                font-size: 2.5em;
+                color: white;
                 font-weight: bold;
             }
-            a:hover {
+            
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
+            }
+            
+            h1 {
+                color: #2c3e50;
+                font-size: 1.5em;
+                margin-bottom: 15px;
+                font-weight: 600;
+            }
+            
+            .target-url {
+                background: #f8f9fa;
+                border: 2px solid #e9ecef;
+                border-radius: 12px;
+                padding: 15px;
+                margin: 20px 0;
+                word-break: break-all;
+                font-size: 0.95em;
+            }
+            
+            .target-url a {
+                color: #3498db;
+                text-decoration: none;
+                font-weight: 500;
+                display: block;
+            }
+            
+            .target-url a:hover {
+                color: #2980b9;
                 text-decoration: underline;
             }
-            #countdown {
-                font-size: 2.5em;
-                font-weight: bold;
-                color: #e44d26; /* 倒计时数字的颜色 */
-                display: block;
-                margin-top: 15px;
+            
+            .countdown-section {
+                margin: 25px 0;
             }
-            p {
-                font-size: 1.1em;
-                line-height: 1.6;
+            
+            .countdown-number {
+                font-size: 3em;
+                font-weight: bold;
+                color: #e74c3c;
+                display: block;
+                line-height: 1;
+                margin-bottom: 10px;
+            }
+            
+            .countdown-text {
+                color: #7f8c8d;
+                font-size: 1em;
+                margin-bottom: 5px;
+            }
+            
+            .manual-redirect {
+                margin-top: 25px;
+                padding-top: 20px;
+                border-top: 1px solid #ecf0f1;
+            }
+            
+            .btn {
+                display: inline-block;
+                background: linear-gradient(135deg, #3498db, #2980b9);
+                color: white;
+                padding: 12px 30px;
+                border-radius: 25px;
+                text-decoration: none;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                border: none;
+                cursor: pointer;
+                font-size: 1em;
+            }
+            
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+                text-decoration: none;
+                color: white;
+            }
+            
+            .language-switch {
+                margin-top: 20px;
+                font-size: 0.9em;
+                color: #95a5a6;
+            }
+            
+            /* 移动端优化 */
+            @media (max-width: 768px) {
+                body {
+                    padding: 15px;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                }
+                
+                .container {
+                    padding: 30px 20px;
+                    margin: 0;
+                    border-radius: 16px;
+                }
+                
+                .redirect-icon {
+                    width: 60px;
+                    height: 60px;
+                    margin-bottom: 15px;
+                }
+                
+                .redirect-icon::before {
+                    font-size: 2em;
+                }
+                
+                h1 {
+                    font-size: 1.3em;
+                }
+                
+                .countdown-number {
+                    font-size: 2.5em;
+                }
+                
+                .target-url {
+                    padding: 12px;
+                    font-size: 0.9em;
+                }
+                
+                .btn {
+                    padding: 10px 25px;
+                    font-size: 0.95em;
+                    width: 100%;
+                    max-width: 200px;
+                }
+            }
+            
+            @media (max-width: 480px) {
+                .container {
+                    padding: 25px 15px;
+                }
+                
+                h1 {
+                    font-size: 1.2em;
+                }
+                
+                .countdown-number {
+                    font-size: 2em;
+                }
+                
+                .countdown-text {
+                    font-size: 0.9em;
+                }
             }
         </style>
     </head>
     <body>
         <div class='container'>
-            <h2>正在跳转到：<br><a href='{$target}'>{$target}</a></h2>
-            <p><span id='countdown'>{$delay}</span> 秒后自动跳转，如果没有跳转，请点击上面的链接。</p>
-            <p>(Automatic redirect in <span id='countdown-en'>{$delay}</span> seconds. If not redirected, please click the link above.)</p>
+            <div class='redirect-icon'></div>
+            <h1>正在为您跳转</h1>
+            
+            <div class='target-url'>
+                <a href='{$target}'>{$target}</a>
+            </div>
+            
+            <div class='countdown-section'>
+                <span class='countdown-number' id='countdown'>{$delay}</span>
+                <div class='countdown-text'>秒后自动跳转</div>
+                <div class='countdown-text'>Automatic redirect in <span id='countdown-en'>{$delay}</span> seconds</div>
+            </div>
+            
+            <div class='manual-redirect'>
+                <a href='{$target}' class='btn'>立即访问</a>
+                <div class='language-switch'>If not redirected, please click the button</div>
+            </div>
         </div>
         
         <script>
             // 获取倒计时显示元素
             var countdownElement = document.getElementById('countdown');
-            var countdownElementEn = document.getElementById('countdown-en'); // 英文版倒计时元素
+            var countdownElementEn = document.getElementById('countdown-en');
             
             // 获取初始倒计时秒数
             var timeLeft = {$delay};
@@ -125,12 +296,12 @@ if ($target) {
             // 定义倒计时函数
             function updateCountdown() {
                 if (countdownElement) {
-                    countdownElement.textContent = timeLeft; // 更新中文显示
+                    countdownElement.textContent = timeLeft;
                 }
                 if (countdownElementEn) {
-                    countdownElementEn.textContent = timeLeft; // 更新英文显示
+                    countdownElementEn.textContent = timeLeft;
                 }
-                timeLeft--; // 减少剩余时间
+                timeLeft--;
 
                 // 如果时间到，清除定时器
                 if (timeLeft < 0) {
@@ -142,7 +313,7 @@ if ($target) {
             var countdownInterval = setInterval(updateCountdown, 1000);
 
             // 第一次调用，立即显示初始值
-            updateCountdown(); 
+            updateCountdown();
         </script>
     </body>
     </html>";
@@ -151,31 +322,133 @@ if ($target) {
 
 // 如果当前域名未找到匹配的跳转规则，则显示提示页面
 echo "<!DOCTYPE html>
-<html lang='en'>
+<html lang='zh-CN'>
 <head>
     <meta charset='utf-8'>
-    <title>未设置跳转规则 (No Redirect Rule Set)</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>未设置跳转规则</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
     <style>
-        body { text-align: center; padding-top: 100px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; background: #f9f9f9; }
-        .container {
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            display: inline-block;
-            padding: 40px 60px;
-            max-width: 600px;
+        * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
-        h2 { color: #dc3545; margin-bottom: 20px; }
-        p { font-size: 1.1em; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .error-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            color: white;
+            font-weight: bold;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .domain-display {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 1.1em;
+            color: #e74c3c;
+            font-weight: 500;
+        }
+        
+        .message {
+            color: #7f8c8d;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+        
+        /* 移动端优化 */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .container {
+                padding: 30px 20px;
+                margin: 0;
+                border-radius: 16px;
+            }
+            
+            .error-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 2em;
+                margin-bottom: 15px;
+            }
+            
+            h1 {
+                font-size: 1.3em;
+            }
+            
+            .domain-display {
+                padding: 12px;
+                font-size: 1em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 15px;
+            }
+            
+            h1 {
+                font-size: 1.2em;
+            }
+            
+            .message {
+                font-size: 0.9em;
+            }
+        }
     </style>
 </head>
 <body>
     <div class='container'>
-        <h2>未设置跳转规则 (No Redirect Rule Set)</h2>
-        <p>当前域名 <code>{$host}</code> 未在系统中配置跳转规则。</p>
-        <p>(The current domain <code>{$host}</code> is not configured for redirection in the system.)</p>
+        <div class='error-icon'>!</div>
+        <h1>未设置跳转规则</h1>
+        <div class='domain-display'>{$host}</div>
+        <p class='message'>当前域名未在系统中配置跳转规则</p>
+        <p class='message'>The current domain is not configured for redirection</p>
     </div>
 </body>
 </html>";
