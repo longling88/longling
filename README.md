@@ -2,7 +2,7 @@
 
 展示图
 
-登录页面
+登录页面 默认账号密码 账号：admin 密码：123456
 
 <img width="331" height="376" alt="image" src="https://github.com/user-attachments/assets/855ef763-15fb-4f39-852f-18d4b5447042" />
 
